@@ -7,6 +7,9 @@ const app = express();
 // definisco il numero di porta su cui il server deve rimanere in ascolto
 const port = process.env.SERVER_PORT || 3000;
 
+// importo il router
+const movieRouter = require('./routers/movieRouter')
+
 // importo i custom middlware
 const errorHandler = require('./middlwares/errorHandler');
 const notFound = require('./middlwares/notFound')
@@ -21,6 +24,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send('Movies API server')
 });
+
+app.use('/api/movie', movieRouter);
 
 // // Error handler middlare
 app.use(errorHandler)
