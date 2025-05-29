@@ -8,8 +8,8 @@ const app = express();
 const port = process.env.SERVER_PORT || 3000;
 
 // importo i custom middlware
-const errorHanler = require("./middlwares/errorHandler");
-const notFound = require("./middlewares/notFound")
+const errorHandler = require('./middlwares/errorHandler');
+const notFound = require('./middlwares/notFound')
 
 // uso il middleware per gli asset statici
 app.use(express.static('public'));
@@ -22,7 +22,13 @@ app.get("/", (req, res) => {
     res.send('Movies API server')
 });
 
-// 
+// // Error handler middlare
+app.use(errorHandler)
+
+// // Not found middleware
+app.use(notFound)
+
+// dico al server di rimanere in ascolto sulla porta 3000
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`)
 })
