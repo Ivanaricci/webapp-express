@@ -1,5 +1,8 @@
 // importo express
 const express = require('express');
+require('dotenv').config();
+
+
 
 // inizializzo la variabile app con il metodo express
 const app = express();
