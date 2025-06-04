@@ -4,6 +4,17 @@ const connection = require('../data/db');
 const index = (req, res) => {
     connection.query("SELECT * FROM movies", (err, movieResult) => {
         if (err) return res.status(500).json({ error: "Database query failed" + err });
+
+
+        // ciclo l'array per sovrascrivere il valore della proprietà image. in questo modo non conterrà più solo il nome dell'immagine ma tutto il percorso
+        const movies = movieResult.map((movie) => {
+            console.log(req, movie.image)
+            const obj = {
+                ...movie,
+                image: req.imagePath + movie.image
+            }
+        })
+
         res.json(movieResult)
     })
 }

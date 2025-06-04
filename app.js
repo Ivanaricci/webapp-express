@@ -13,6 +13,7 @@ const movieRouter = require('./routers/movieRouter')
 // importo i custom middlware
 const errorHandler = require('./middlwares/errorHandler');
 const notFound = require('./middlwares/notFound')
+const imagePathMiddlware = require('./middlwares/imagePath')
 
 // uso il middleware per gli asset statici
 app.use(express.static('public'));
@@ -20,12 +21,15 @@ app.use(express.static('public'));
 // uso il middlware per il parsing del body delle richieste
 app.use(express.json());
 
+// uso il middlware per le immagini
+app.use(imagePathMiddlware);
+
 // definisco l'entry point
 app.get("/", (req, res) => {
     res.send('Movies API server')
 });
 
-app.use('/api/movie', movieRouter);
+app.use('/api/movies', movieRouter);
 
 // // Error handler middlare
 app.use(errorHandler)
