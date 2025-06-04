@@ -9,13 +9,13 @@ const index = (req, res) => {
         // ciclo l'array per sovrascrivere il valore della proprietà image. in questo modo non conterrà più solo il nome dell'immagine ma tutto il percorso
         const movies = movieResult.map((movie) => {
             console.log(req, movie.image)
-            const obj = {
+            return {
                 ...movie,
                 image: req.imagePath + movie.image
             }
         })
 
-        res.json(movieResult)
+        res.json(movies)
     })
 }
 
@@ -24,7 +24,11 @@ const show = (req, res) => {
     const { id } = req.params
 
     // query per il recupero dei film avente l'id recuperato
-    const movieSql = "SELECT * FROM movies WHERE id= ?";
+    const movieSql = `
+    SELECT B. *, ROUND(AVG(R.vote)) AS average_vote
+    FROM movies B
+    JOIN reviews R ON r.movie_id = B.id 
+    WHERE B.id= ?`;
 
     // query per il recupero delle recensioni del film recuperato
     const reviewsSql = `
@@ -51,7 +55,11 @@ const show = (req, res) => {
             // aggiungo le recensioni
             movie.reviews = reviewsResult;
 
-            res.json(movieResult);
+            // vado ad aggiungere la media delle recensioni per il singolo libro
+            movie.average_vote = parseInt(movie.average_vote);
+
+
+            res.json({ ...movie, image: req.imagePath + movie.image });
         })
 
 
